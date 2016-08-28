@@ -17,17 +17,21 @@ Features (at the moment):
 Installation (on linux):
 ------------------------
 In order to have Apollo working you need at least `Python 3.5`:
-    $ sudo add-apt-repository ppa:fkrull/deadsnakes
-    $ sudo apt-get update
-    $ sudo apt-get install python3.5
+
+`$ sudo add-apt-repository ppa:fkrull/deadsnakes
+$ sudo apt-get update
+$ sudo apt-get install python3.5`
 
 Install the discord API module:
+
 `$ pip3 install -U discord.py`
 
 Customize the database with your data and rename it to db.json:
+
 `$ vi replace_me_db.json > db.json`
 
 Run bot.py:
+
 `$ python3 bot.py`
 
 Acknowledgments:
