@@ -1,6 +1,6 @@
 # Apollo Discord Bot
 
-![Icon]("\static\icon.png" =100x)
+<img src="\static\icon.png" width="100">
 
 Apollo is a discord bot written in Python.
 Apollo uses the disord API for python [discord.py](https://github.com/Rapptz/discord.py/)
