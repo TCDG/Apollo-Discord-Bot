@@ -1,0 +1,14 @@
+{
+  "_comments": "Please change owner, owner_id, token, client_id, carbon_key, bots_key with your actual info!",
+  
+  "token": "bot token goes here",
+  "client_id": "bot client id goes here",
+  "carbon_key": "add if bot is on carbonitex",
+  "bots_key": "bot key goes here",
+  "prefix": "%",
+  "ads": [".biz", ".com", ".me", ".co.uk", ".support", ".website", ".ie", ".xyz", ".tk"],
+  "whitelist": ["someuser", "margobra8"],
+  "role_whitelist": ["Admin", "Mods"],
+  "owner": "margobra8",
+  "owner_id": "195557723515912192"
+}
