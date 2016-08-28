@@ -30,7 +30,9 @@ Install the discord API module:
 
 Customize the database with your data and rename it to db.json:
 
-`$ vi replace_me_db.json > db.json`
+`$ vi replace_me_db.json`
+
+`vim> :w db.json`
 
 Run bot.py:
 
