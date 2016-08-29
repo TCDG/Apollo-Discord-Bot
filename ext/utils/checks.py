@@ -1,8 +1,11 @@
-from discord.ext import commands
-import discord.utils
+#! python3
+# coding: utf-8
+
 import json
 import os.path
-import sys
+
+import discord.utils
+from discord.ext import commands
 
 # db path
 basepath = os.path.dirname(__file__)

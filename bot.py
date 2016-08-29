@@ -1,14 +1,17 @@
 #! python3
 # coding: utf-8
 
-import discord
-from discord.ext import commands
-import random
+import datetime
+import json
 import logging
+import random
 import sys
 from datetime import datetime
-from cogs.utils import checks
-import json
+
+import discord
+from discord.ext import commands
+
+from ext.utils import checks
 
 # logging
 logging.basicConfig(level=logging.WARNING)
@@ -27,7 +30,7 @@ db = load_db()
 prefix = db['prefix']
 
 description = '''Hello! I'm Apollo, margobra8's multipurpose Discord bot.
-I run with Python 3.5 <3.\n
+I run with Python 3.5.\n
 One of my main utilities is an AdBlock for users links in nicknames.
 But there are a lot of other commands I can run and things I can do.'''
 bot = commands.Bot(command_prefix=prefix, description=description, no_pm=True, pm_help=True)
@@ -38,6 +41,15 @@ ads = db['ads']
 whitelist = db['whitelist']
 role_whitelist = db['role_whitelist']
 current_datetime = datetime.now().strftime("%d %b %Y %H:%M")
+
+# Cogs addition
+initial_extensions = [
+    'ext.admin',
+    'ext.mentions',
+    'ext.meta',
+    'ext.mod',
+    'ext.profile',
+]
 
 
 # Error handling
@@ -67,6 +79,8 @@ async def on_ready():
     print("ID: " + bot.user.id)
     print("Instance run at: " + current_datetime)
     print('------')
+    if not hasattr(bot, 'uptime'):
+        bot.uptime = datetime.datetime.utcnow()
     await bot.change_status(game=discord.Game(name="%help | v.1.5"), idle=False)
 
 
@@ -110,40 +124,9 @@ async def change_nick(member: discord.Member, nick_chosen: str):
 
 
 @bot.command()
-@checks.is_owner()
-async def change_game(*game_chosen: str):
-    """Changes the game the bot is playing"""
-    game_conc = ' '.join(map(str, game_chosen))
-    game_str = discord.Game(name=game_conc)
-    try:
-        await bot.change_status(game=game_str, idle=False)
-        await bot.say("```Game correctly changed to {0}```".format(game_conc))
-    except discord.HTTPException:
-        await bot.say("```Could not change game, please try again```")
-
-
-@bot.command()
 async def choose(*choices: str):
     """Chooses between multiple choices."""
     await bot.say(random.choice(choices))
-
-
-@bot.command(enabled=False)
-@checks.is_owner()
-async def do_eval(*evaluation: str):
-    """Sends an eval of a string"""
-    arg_conc = ' '.join(map(str, evaluation))
-    decision = eval(str(arg_conc))
-    await bot.say(decision)
-
-
-@bot.command(enabled=False)
-@checks.is_owner()
-async def do_exec(*execution: str):
-    """Executes something"""
-    arg_conc = ' '.join(map(str, execution))
-    decision = exec(str(arg_conc))
-    await bot.say(decision)
 
 
 @bot.command()
@@ -169,26 +152,6 @@ async def purge():
                         continue
             else:
                 print("!!!!!! {0.name} ignored, continuing...".format(member))
-
-
-"""
-@bot.command(st)
-async def wipe():
-    # TODO: add desc Clears all messages from the server
-    for discord.Message in bot.server:
-        await bot.delete_message(discord.Message)
-"""
-
-sleep = "zZzZ..."
-
-
-@bot.command()
-@checks.is_owner()
-async def shutdown():
-    """Terminates the bot's main process"""
-    print(sleep)
-    await bot.say(sleep)
-    await bot.close()
 
 
 @bot.command()
@@ -221,5 +184,12 @@ if __name__ == '__main__':
     bot.client_id = db['client_id']
     bot.carbon_key = db['carbon_key']  # Future carbon integration???? well never know
     bot.bots_key = db['bots_key']
+
+    # load the extensions
+    for extension in initial_extensions:
+        try:
+            bot.load_extension(extension)
+        except Exception as e:
+            print('Failed to load extension {}\n{}: {}'.format(extension, type(e).__name__, e))
 
     bot.run(db['token'])
