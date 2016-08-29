@@ -329,7 +329,7 @@ class Meta:
         """Tells you how long the bot has been up for."""
         await self.bot.say('Uptime: **{}**'.format(self.get_bot_uptime()))
 
-    @commands.command()
+    @commands.command(hidden=True)
     async def about(self):
         """Tells you information about the bot itself."""
         revision = os.popen(r'git show -s HEAD --format="%s (%cr)"').read().strip()
@@ -364,7 +364,7 @@ class Meta:
     @commands.command(hidden=True)
     @checks.is_owner()
     async def commandstats(self):
-        msg = 'Since startup, {} commands have been used.\n{}'
+        msg = 'Since startup, {0} commands have been used.\n{1}'
         counter = self.bot.commands_used
         await self.bot.say(msg.format(sum(counter.values()), counter))
 
