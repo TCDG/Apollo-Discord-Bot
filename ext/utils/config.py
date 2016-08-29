@@ -16,9 +16,9 @@ class Config:
         self.loop = options.pop('loop', asyncio.get_event_loop())
         # db path
         basepath = os.path.dirname(__file__)
-        filepath = os.path.abspath(os.path.join(basepath, "..", "..", "db.json"))
+        filepath = os.path.abspath(os.path.join(basepath, "..", "mod.json"))
 
-        self._db = filepath
+        self._db = json.dump(filepath)
         if options.pop('load_later', False):
             self.loop.create_task(self.load())
         else:

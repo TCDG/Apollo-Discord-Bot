@@ -1,12 +1,11 @@
 #! python3
 # coding: utf-8
 
-import datetime
 import json
 import logging
 import random
 import sys
-from datetime import datetime
+import datetime
 
 import discord
 from discord.ext import commands
@@ -15,7 +14,6 @@ from ext.utils import checks
 
 # logging
 logging.basicConfig(level=logging.WARNING)
-
 
 # JSON load
 def load_db():
@@ -40,7 +38,7 @@ ads = db['ads']
 # ads = [".biz"] # tests only
 whitelist = db['whitelist']
 role_whitelist = db['role_whitelist']
-current_datetime = datetime.now().strftime("%d %b %Y %H:%M")
+current_datetime = datetime.datetime.now().strftime("%d %b %Y %H:%M")
 
 # Cogs addition
 initial_extensions = [
@@ -80,7 +78,7 @@ async def on_ready():
     print("Instance run at: " + current_datetime)
     print('------')
     if not hasattr(bot, 'uptime'):
-        bot.uptime = datetime.datetime.utcnow()
+        bot.uptime = datetime.datetime.now()
     await bot.change_status(game=discord.Game(name="%help | v.1.5"), idle=False)
 
 
@@ -112,49 +110,7 @@ async def on_server_join(server):
                                    so that I can run my commands and functions properly!")
 
 
-@bot.command()
-@checks.is_owner()
-async def change_nick(member: discord.Member, nick_chosen: str):
-    """Changes the nick of an user"""
-    try:
-        await bot.change_nickname(member, nick_chosen)
-        await bot.say("{0} nickname successfully changed to '{1}'".format(member, nick_chosen))
-    except discord.HTTPException:
-        await bot.say("[ERROR:HTTPException] {0.name} has not enough permissions.".format(bot.user))
-
-
-@bot.command()
-async def choose(*choices: str):
-    """Chooses between multiple choices."""
-    await bot.say(random.choice(choices))
-
-
-@bot.command()
-async def purge():
-    """Purges the member's nicks for censorship"""
-    print("Scanning Servers and nicknames")
-    for server in bot.servers:
-        for member in server.members:
-            print("server: {0} | user: {1.name} | role: {1.top_role} | role_id: {1.top_role.id}".format(server, member,
-                                                                                                        member))
-            if member.name not in whitelist:
-                for word in ads:
-                    if word.lower() in str(member.nick).lower():
-                        try:
-                            await bot.change_nickname(member, '[Nick violates rules]')
-                            alert = '{0.mention} nickname violates the guidelines, removing...'
-                            await bot.send_message(member.server, alert.format(member))
-                        except discord.HTTPException:
-                            error = "There was an error changing {0.mention} nickname."
-                            await bot.send_message(member.server, error.format(member))
-                            print(error)
-                    else:
-                        continue
-            else:
-                print("!!!!!! {0.name} ignored, continuing...".format(member))
-
-
-@bot.command()
+@bot.command(hidden=True)
 @checks.is_owner()
 async def user_list():
     """Displays a log of all users in every server the bot is connected to"""
@@ -170,7 +126,7 @@ async def user_list():
                     member))
 
 
-@bot.command()
+@bot.command(hidden=True)
 async def date_joined(member: discord.Member):
     """Says when a member joined from the bot server's database"""
     await bot.say('{0.name} joined in {0.joined_at}'.format(member))
@@ -179,7 +135,7 @@ async def date_joined(member: discord.Member):
 # run dat shit tho
 if __name__ == '__main__':
     if any('debug' in arg.lower() for arg in sys.argv):
-        bot.command_prefix = '$'
+        bot.command_prefix = '^'
 
     bot.client_id = db['client_id']
     bot.carbon_key = db['carbon_key']  # Future carbon integration???? well never know

@@ -1,5 +1,6 @@
 # Ignore the original database
 db.json
+mod.json
 
 # Ignore cmd files
 *.cmd
