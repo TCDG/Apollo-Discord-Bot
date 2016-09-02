@@ -91,10 +91,8 @@ class Mentions:
             fmt = 'You were mentioned in {0.channel.mention}:\n{1}'
             fmt = fmt.format(message, '\n'.join(map(self.format_message, messages)))
             await self.bot.send_message(origin, fmt)
-        except:
-            # silent failure best failure
-            pass
-
+        except Exception as e:
+            print(e)
     def members_mentioned_in(self, message):
         ret = set()
         for member in message.mentions:
@@ -141,7 +139,8 @@ class Mentions:
             coro = self.handle_message_mention(origin, message)
             self.bot.loop.create_task(coro)
 
-    @commands.command(pass_context=True, no_pm=True)
+    # TODO: Broken
+    @commands.command(pass_context=True, no_pm=True, enabled=False)
     async def mentions(self, ctx, channel: discord.Channel = None, context: int = 3):
         """Tells you when you were mentioned in a channel.
         If a channel is not given, then it tells you when you were mentioned in a
@@ -154,12 +153,14 @@ class Mentions:
         context = min(5, max(0, context))
 
         author = ctx.message.author
+        print(author)
         logs = []
         mentioned_indexes = []
         async for message in self.bot.logs_from(channel, limit=1500, before=ctx.message):
             if author.mentioned_in(message):
                 # we're mentioned so..
                 mentioned_indexes.append(len(logs))
+                print(len(logs))
 
             # these logs are from newest message to oldest
             # so logs[0] is newest and logs[-1] is oldest
@@ -170,11 +171,13 @@ class Mentions:
             return
 
         for index in mentioned_indexes:
-            view = reversed(logs[index - context - 1:index + context])
+            view = reversed(logs[(index - context - 1): index + context])
             try:
-                await self.bot.whisper('\n'.join(map(self.format_message, view)))
-            except discord.HTTPException:
-                await self.bot.whisper('An error happened while fetching mentions.')
+                # await self.bot.whisper('\n'.join(map(self.format_message, view)))
+                await self.bot.send_message(author, '\n'.join(map(self.format_message, view)))
+            except discord.HTTPException as e:
+                print(e)
+                # await self.bot.whisper('An error happened while fetching mentions.')
 
     @commands.command(pass_context=True, no_pm=True)
     async def pmmentions(self, ctx, mode: mention_converter = None):

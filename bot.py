@@ -15,6 +15,7 @@ from ext.utils import checks
 # logging
 logging.basicConfig(level=logging.WARNING)
 
+
 # JSON load
 def load_db():
     with open('db.json') as f:
@@ -46,7 +47,7 @@ initial_extensions = [
     'ext.mentions',
     'ext.meta',
     'ext.mod',
-    'ext.profile',
+    # 'ext.profile',
 ]
 
 
@@ -78,7 +79,7 @@ async def on_ready():
     print("Instance run at: " + current_datetime)
     print('------')
     if not hasattr(bot, 'uptime'):
-        bot.uptime = datetime.datetime.now()
+        bot.uptime = datetime.datetime.utcnow()
     await bot.change_status(game=discord.Game(name="%help | v.1.5"), idle=False)
 
 

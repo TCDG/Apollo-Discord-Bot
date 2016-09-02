@@ -18,7 +18,7 @@ class Config:
         basepath = os.path.dirname(__file__)
         filepath = os.path.abspath(os.path.join(basepath, "..", "mod.json"))
 
-        self._db = json.JSONDecoder(filepath)
+        self._db = filepath
         if options.pop('load_later', False):
             self.loop.create_task(self.load())
         else:

@@ -81,7 +81,7 @@ class Meta:
         To display the source code of a subcommand you have to separate it by
         periods, e.g. tag.create for the create subcommand of the tag command.
         """
-        source_url = 'https://github.com/Rapptz/RoboDanny'
+        source_url = 'https://github.com/TCDG/Apollo-Discord-Bot'
         if command is None:
             await self.bot.say(source_url)
             return
@@ -153,13 +153,13 @@ class Meta:
         await self.bot.say(sleep)
         await self.bot.close()
 
-    @commands.command(name='force_quit', hidden=True)
+    @commands.command(name='forcequit', hidden=True)
     @checks.is_owner()
     async def _force_quit(self):
         """Force-quits the bot"""
         await self.bot.logout()
 
-    @commands.command(name='change_game')
+    @commands.command(name='changegame')
     @checks.is_owner()
     async def _change_game(self, *, game_chosen: str):
         """Changes the game the bot is playing"""
