@@ -53,7 +53,7 @@ class Meta:
     @commands.command(hidden=True)
     async def hello(self):
         """Displays my intro message."""
-        await self.bot.say('Hello! I\'m a robot! Danny#0007 made me.')
+        await self.bot.say('Hello! I\'m a robot! margobra8 made me.')
 
     @commands.command()
     async def charinfo(self, *, characters: str):
@@ -334,7 +334,7 @@ class Meta:
         """Tells you information about the bot itself."""
         revision = os.popen(r'git show -s HEAD --format="%s (%cr)"').read().strip()
         result = ['**About Me:**']
-        result.append('- Author: Danny#0007 (Discord ID: 80088516616269824)')
+        result.append('- Author: margobra8')
         result.append('- Library: discord.py (Python)')
         result.append('- Latest Change: {}'.format(revision))
         result.append('- Uptime: {}'.format(self.get_bot_uptime()))
@@ -353,7 +353,6 @@ class Meta:
         result.append('- Unique Members: {} ({} online)'.format(len(unique_members), unique_online))
         result.append('- {} text channels, {} voice channels'.format(text, voice))
         result.append('')
-        result.append('"Official" R. Danny server: https://discord.gg/0118rJdtd1rVJJfuI')
         await self.bot.say('\n'.join(result))
 
     @commands.command(rest_is_raw=True, hidden=True)
